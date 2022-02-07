@@ -58,7 +58,7 @@ class HomeController extends Controller
 
         DB::commit();
 
-        return 'done';
+        return redirect()->route('dashboard')->with('message', 'Transaction was successful');
 
     }
 }

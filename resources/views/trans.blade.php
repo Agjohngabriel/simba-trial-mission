@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="row justify-content-between">
-        <div class="col-8">
+        <div class="col-4">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Dashboard') }}
             </h2>
         </div>
-        <div class="col-4 row justify-content-between">
+        <div class="col-8 row justify-content-between">
             @foreach($wallets as $wall)
                 <div>
-                    <h4>{{$wall->type}}:  {{$wall->balance}}</h4>
+                    <h4>{{$wall->type}}:  {{number_format($wall->balance, 2, ',', '.')}}</h4>
                     <input type="hidden" id="{{$wall->type}}" value="{{$wall->balance}}">
                 </div>
             @endforeach
@@ -78,53 +78,59 @@
                                     .done(function( data ) {
                                         if(targetv === "USD") {
                                             let $rate = data.rates.USD;
-                                            let $a = amountv * $rate;
+                                            let $converted = amountv * $rate;
+                                            let $a = (Math.round($converted * 100) / 100).toLocaleString();
+                                            let $amount = amountv;
                                             $( ".rates" ).empty();
                                             $( ".rates" ).append( '<span>The Exchange rate is: ' + $rate + '</span>' );
                                             $( ".amountt" ).empty();
                                             $( ".amountt" ).append( '<span>The equivalent to USD is : ' +  $a + '</span>' );
 
-                                            if ($('#'+sourcev+'').val() <= $a){
+                                            if (Number($('#'+sourcev+'').val()) > Number($amount)){
+                                                $('#submitButton').attr("disabled", false);
+                                                $( ".alert" ).empty();
+                                            }else{
                                                 $('#submitButton').attr("disabled", "");
                                                 $( ".alert" ).empty();
                                                 $( ".alert" ).append( '<span>Insufficient Funds in' + ' ' + sourcev + ' ' + 'wallet</span>' );
-                                            }else{
-                                                $('#submitButton').attr("disabled", false);
-                                                $( ".alert" ).empty();
                                             }
                                         }
                                         if(targetv === "EUR") {
                                             let $rate = data.rates.EUR;
-                                            let $a = amountv * $rate;
+                                            let $converted = amountv * $rate;
+                                            let $a = (Math.round($converted * 100) / 100).toLocaleString();
+                                            let $amount = amountv;
                                             $( ".rates" ).empty();
                                             $( ".rates" ).append( '<span>The Exchange rate is: ' + $rate + '</span>' );
                                             $( ".amountt" ).empty();
                                             $( ".amountt" ).append( '<span>The equivalent to EUR is : ' +  $a + '</span>' );
 
-                                            if ($('#'+sourcev+'').val() <= $a){
-                                                $('#submitButton').attr("disabled", true);
-                                                $( ".alert" ).empty();
-                                                $( ".alert" ).append( '<span>Insufficient Funds in' + ' ' + sourcev + ' ' + ' wallet</span>' );
-                                            }else{
+                                            if (Number($('#'+sourcev+'').val()) > Number($amount)){
                                                 $('#submitButton').attr("disabled", false);
                                                 $( ".alert" ).empty();
+                                            }else{
+                                                $('#submitButton').attr("disabled", "");
+                                                $( ".alert" ).empty();
+                                                $( ".alert" ).append( '<span>Insufficient Funds in' + ' ' + sourcev + ' ' + 'wallet</span>' );
                                             }
                                         }
                                         if(targetv === "NGN") {
                                             let $rate = data.rates.NGN;
-                                            let $a = amountv * $rate;
+                                            let $converted = amountv * $rate;
+                                            let $a = (Math.round($converted * 100) / 100).toLocaleString();
+                                            let $amount = amountv;
                                             $( ".rates" ).empty();
                                             $( ".rates" ).append( '<span>The Exchange rate is: ' + $rate + '</span>' );
                                             $( ".amountt" ).empty();
                                             $( ".amountt" ).append( '<span>The equivalent to NGN is : ' +  $a + '</span>' );
 
-                                            if ($('#'+sourcev+'').val() <= $a){
-                                                $('#submitButton').attr("disabled", true);
-                                                $( ".alert" ).empty();
-                                                $( ".alert" ).append( '<span>Insufficient Funds in' + ' ' + sourcev + ' ' + ' wallet</span>' );
-                                            }else{
+                                            if (Number($('#'+sourcev+'').val()) > Number($amount)){
                                                 $('#submitButton').attr("disabled", false);
                                                 $( ".alert" ).empty();
+                                            }else{
+                                                $('#submitButton').attr("disabled", "");
+                                                $( ".alert" ).empty();
+                                                $( ".alert" ).append( '<span>Insufficient Funds in' + ' ' + sourcev + ' ' + 'wallet</span>' );
                                             }
                                         }
                                     });
